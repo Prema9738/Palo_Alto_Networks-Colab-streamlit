@@ -585,7 +585,9 @@ with tab4:
             f"{len(low_engagement):,}"
         )
 
-        avg_alert_score = f"{low_engagement['Engagement_Score'].mean():.1f}"
+        avg_alert_score = (
+            f"{low_engagement['Engagement_Score'].mean():.1f}"
+        )
 
         alert_col2.metric(
             "Average Alert Score",
@@ -601,8 +603,10 @@ with tab4:
             "High-Risk + Low Engagement",
             f"{high_risk_low_engagement:,}"
         )
-alert_summary = (
-            low_engagement.groupby(["Department", "JobRole"])
+
+        alert_summary = (
+            low_engagement
+            .groupby(["Department", "JobRole"])
             .agg(
                 Employees=("Engagement_Score", "size"),
                 Avg_Engagement=("Engagement_Score", "mean"),
