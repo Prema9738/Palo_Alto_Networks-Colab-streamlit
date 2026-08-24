@@ -26,7 +26,7 @@ st.write(
     "engagement, burnout risk, workload stress and career-stage patterns."
 )
 
-df = pd.read_csv("/content/Palo Alto Networks.csv")
+df = pd.read_csv("Palo Alto Networks.csv")
 
 df.head()
 
