@@ -577,18 +577,27 @@ with tab4:
 
     alert_col1, alert_col2, alert_col3 = st.columns(3)
 
-    alert_col1.metric("Employees Below Threshold", f"{len(low_engagement):,}")
-    alert_col2.metric(
-        "Average Alert Score",
-        f"{low_engagement['Engagement_Score'].mean():.1f}"
-        if not low_engagement.empty
-        else "—",
-    )
-    alert_col3.metric(
-        "High-Risk + Low Engagement",
-        f"{((filtered_df['Burnout_Risk'] == 'High') & "
-        f"(filtered_df['Engagement_Score'] < engagement_threshold)).sum():,}",
-    )
+alert_col1.metric(
+    "Employees Below Threshold",
+    f"{len(low_engagement):,}"
+)
+
+alert_col2.metric(
+    "Average Alert Score",
+    f"{low_engagement['Engagement_Score'].mean():.1f}"
+    if not low_engagement.empty
+    else "—"
+)
+
+high_risk_low_engagement = (
+    (filtered_df["Burnout_Risk"] == "High") &
+    (filtered_df["Engagement_Score"] < engagement_threshold)
+).sum()
+
+alert_col3.metric(
+    "High-Risk + Low Engagement",
+    f"{high_risk_low_engagement:,}"
+)
 
     if low_engagement.empty:
         st.success("No low-engagement alerts under the current threshold.")
