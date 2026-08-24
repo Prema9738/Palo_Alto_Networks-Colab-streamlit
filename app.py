@@ -575,34 +575,33 @@ with tab4:
         filtered_df["Engagement_Score"] < engagement_threshold
     ].copy()
 
-    alert_col1, alert_col2, alert_col3 = st.columns(3)
-
-alert_col1.metric(
-    "Employees Below Threshold",
-    f"{len(low_engagement):,}"
-)
-
-alert_col2.metric(
-    "Average Alert Score",
-    f"{low_engagement['Engagement_Score'].mean():.1f}"
-    if not low_engagement.empty
-    else "—"
-)
-
-high_risk_low_engagement = (
-    (filtered_df["Burnout_Risk"] == "High") &
-    (filtered_df["Engagement_Score"] < engagement_threshold)
-).sum()
-
-alert_col3.metric(
-    "High-Risk + Low Engagement",
-    f"{high_risk_low_engagement:,}"
-)
-
     if low_engagement.empty:
         st.success("No low-engagement alerts under the current threshold.")
     else:
-        alert_summary = (
+        alert_col1, alert_col2, alert_col3 = st.columns(3)
+
+        alert_col1.metric(
+            "Employees Below Threshold",
+            f"{len(low_engagement):,}"
+        )
+
+        avg_alert_score = f"{low_engagement['Engagement_Score'].mean():.1f}"
+
+        alert_col2.metric(
+            "Average Alert Score",
+            avg_alert_score
+        )
+
+        high_risk_low_engagement = (
+            (filtered_df["Burnout_Risk"] == "High") &
+            (filtered_df["Engagement_Score"] < engagement_threshold)
+        ).sum()
+
+        alert_col3.metric(
+            "High-Risk + Low Engagement",
+            f"{high_risk_low_engagement:,}"
+        )
+alert_summary = (
             low_engagement.groupby(["Department", "JobRole"])
             .agg(
                 Employees=("Engagement_Score", "size"),
