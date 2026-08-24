@@ -329,7 +329,3 @@ df.to_csv(
     "employee_engagement_analysis.csv",
     index=False
 )
-
-from google.colab import files
-
-files.download("employee_engagement_analysis.csv")
